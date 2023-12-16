@@ -291,7 +291,7 @@ func SealingPipeline(fc config.MinerFeeConfig) func(params SealingPipelineParams
 
 		lc.Append(fx.Hook{
 			OnStart: func(context.Context) error {
-				go pipeline.Run(ctx)
+				//go pipeline.Run(ctx)
 				return nil
 			},
 			OnStop: pipeline.Stop,
@@ -301,8 +301,8 @@ func SealingPipeline(fc config.MinerFeeConfig) func(params SealingPipelineParams
 	}
 }
 
-func WindowPostScheduler(fc config.MinerFeeConfig, pc config.ProvingConfig) func(params SealingPipelineParams) (*wdpost.WindowPoStScheduler, error) {
-	return func(params SealingPipelineParams) (*wdpost.WindowPoStScheduler, error) {
+func WindowPostScheduler(fc config.MinerFeeConfig, pc config.ProvingConfig) func(params SealingPipelineParams) (*wdpost.WindowPoStClusterScheduler, error) {
+	return func(params SealingPipelineParams) (*wdpost.WindowPoStClusterScheduler, error) {
 		var (
 			mctx   = params.MetricsCtx
 			lc     = params.Lifecycle
@@ -311,12 +311,12 @@ func WindowPostScheduler(fc config.MinerFeeConfig, pc config.ProvingConfig) func
 			verif  = params.Verifier
 			j      = params.Journal
 			as     = params.AddrSel
-			maddr  = address.Address(params.Maddr)
+			//maddr  = address.Address(params.Maddr)
 		)
 
 		ctx := helpers.LifecycleCtx(mctx, lc)
 
-		fps, err := wdpost.NewWindowedPoStScheduler(api, fc, pc, as, sealer, verif, sealer, j, maddr)
+		fps, err := wdpost.NewWindowedPoStClusterScheduler(api, fc, pc, as, sealer, verif, sealer, j)
 
 		if err != nil {
 			return nil, err
@@ -798,7 +798,17 @@ func SectorStorage(mctx helpers.MetricsCtx, lc fx.Lifecycle, lstor *paths.Local,
 	wsts := statestore.New(namespace.Wrap(ds, WorkerCallsPrefix))
 	smsts := statestore.New(namespace.Wrap(ds, ManagerWorkPrefix))
 
-	sst, err := sealer.New(ctx, lstor, stor, ls, si, sc, pc, wsts, smsts)
+	sst, err := sealer.New(ctx, lstor, stor, ls, si, config.SealerConfig{
+		ParallelFetchLimit:       10,
+		AllowAddPiece:            false,
+		AllowPreCommit1:          false,
+		AllowPreCommit2:          false,
+		AllowCommit:              false,
+		AllowUnseal:              false,
+		AllowReplicaUpdate:       false,
+		AllowProveReplicaUpdate2: false,
+		AllowRegenSectorKey:      false,
+	}, pc, wsts, smsts)
 	if err != nil {
 		return nil, err
 	}

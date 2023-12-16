@@ -96,7 +96,7 @@ type StorageMinerAPI struct {
 	storiface.WorkerReturn `optional:"true"`
 	AddrSel                *ctladdr.AddressSelector
 
-	WdPoSt *wdpost.WindowPoStScheduler `optional:"true"`
+	WdPoSt *wdpost.WindowPoStClusterScheduler `optional:"true"`
 
 	Epp gen.WinningPoStProver `optional:"true"`
 	DS  dtypes.MetadataDS
@@ -497,7 +497,7 @@ func (sm *StorageMinerAPI) SectorReceive(ctx context.Context, meta api.RemoteSec
 	return err
 }
 
-func (sm *StorageMinerAPI) ComputeWindowPoSt(ctx context.Context, dlIdx uint64, tsk types.TipSetKey) ([]lminer.SubmitWindowedPoStParams, error) {
+func (sm *StorageMinerAPI) ComputeWindowPoSt(ctx context.Context, actorId string, dlIdx uint64, tsk types.TipSetKey) ([]lminer.SubmitWindowedPoStParams, error) {
 	var ts *types.TipSet
 	var err error
 	if tsk == types.EmptyTSK {
@@ -509,7 +509,7 @@ func (sm *StorageMinerAPI) ComputeWindowPoSt(ctx context.Context, dlIdx uint64, 
 		return nil, err
 	}
 
-	return sm.WdPoSt.ComputePoSt(ctx, dlIdx, ts)
+	return sm.WdPoSt.ComputePoSt(ctx, actorId, dlIdx, ts)
 }
 
 func (sm *StorageMinerAPI) ComputeDataCid(ctx context.Context, pieceSize abi.UnpaddedPieceSize, pieceData storiface.Data) (abi.PieceInfo, error) {
@@ -1357,25 +1357,25 @@ func (sm *StorageMinerAPI) ComputeProof(ctx context.Context, ssi []builtin.Exten
 	return sm.Epp.ComputeProof(ctx, ssi, rand, poStEpoch, nv)
 }
 
-func (sm *StorageMinerAPI) RecoverFault(ctx context.Context, sectors []abi.SectorNumber) ([]cid.Cid, error) {
-	allsectors, err := sm.Miner.ListSectors()
-	if err != nil {
-		return nil, xerrors.Errorf("could not get a list of all sectors from the miner: %w", err)
-	}
-	var found bool
-	for _, v := range sectors {
-		found = false
-		for _, s := range allsectors {
-			if v == s.SectorNumber {
-				found = true
-				break
-			}
-		}
-		if !found {
-			return nil, xerrors.Errorf("sectors %d not found in the sector list for miner", v)
-		}
-	}
-	return sm.WdPoSt.ManualFaultRecovery(ctx, sm.Miner.Address(), sectors)
+func (sm *StorageMinerAPI) RecoverFault(ctx context.Context, actorId string, sectors []abi.SectorNumber) ([]cid.Cid, error) {
+	//allsectors, err := sm.Miner.ListSectors()
+	//if err != nil {
+	//	return nil, xerrors.Errorf("could not get a list of all sectors from the miner: %w", err)
+	//}
+	//var found bool
+	//for _, v := range sectors {
+	//	found = false
+	//	for _, s := range allsectors {
+	//		if v == s.SectorNumber {
+	//			found = true
+	//			break
+	//		}
+	//	}
+	//	if !found {
+	//		return nil, xerrors.Errorf("sectors %d not found in the sector list for miner", v)
+	//	}
+	//}
+	return sm.WdPoSt.ManualFaultRecovery(ctx, actorId, sectors)
 }
 
 func (sm *StorageMinerAPI) RuntimeSubsystems(context.Context) (res api.MinerSubsystems, err error) {

@@ -924,7 +924,7 @@ type StorageMinerMethods struct {
 
 	ComputeProof func(p0 context.Context, p1 []builtinactors.ExtendedSectorInfo, p2 abi.PoStRandomness, p3 abi.ChainEpoch, p4 abinetwork.Version) ([]builtinactors.PoStProof, error) `perm:"read"`
 
-	ComputeWindowPoSt func(p0 context.Context, p1 uint64, p2 types.TipSetKey) ([]miner.SubmitWindowedPoStParams, error) `perm:"admin"`
+	ComputeWindowPoSt func(p0 context.Context, p1 string, p2 uint64, p3 types.TipSetKey) ([]miner.SubmitWindowedPoStParams, error) `perm:"admin"`
 
 	CreateBackup func(p0 context.Context, p1 string) error `perm:"admin"`
 
@@ -1024,7 +1024,7 @@ type StorageMinerMethods struct {
 
 	PledgeSector func(p0 context.Context) (abi.SectorID, error) `perm:"write"`
 
-	RecoverFault func(p0 context.Context, p1 []abi.SectorNumber) ([]cid.Cid, error) `perm:"admin"`
+	RecoverFault func(p0 context.Context, p1 string, p2 []abi.SectorNumber) ([]cid.Cid, error) `perm:"admin"`
 
 	ReturnAddPiece func(p0 context.Context, p1 storiface.CallID, p2 abi.PieceInfo, p3 *storiface.CallError) error `perm:"admin"`
 
@@ -5577,14 +5577,14 @@ func (s *StorageMinerStub) ComputeProof(p0 context.Context, p1 []builtinactors.E
 	return *new([]builtinactors.PoStProof), ErrNotSupported
 }
 
-func (s *StorageMinerStruct) ComputeWindowPoSt(p0 context.Context, p1 uint64, p2 types.TipSetKey) ([]miner.SubmitWindowedPoStParams, error) {
+func (s *StorageMinerStruct) ComputeWindowPoSt(p0 context.Context, p1 string, p2 uint64, p3 types.TipSetKey) ([]miner.SubmitWindowedPoStParams, error) {
 	if s.Internal.ComputeWindowPoSt == nil {
 		return *new([]miner.SubmitWindowedPoStParams), ErrNotSupported
 	}
-	return s.Internal.ComputeWindowPoSt(p0, p1, p2)
+	return s.Internal.ComputeWindowPoSt(p0, p1, p2, p3)
 }
 
-func (s *StorageMinerStub) ComputeWindowPoSt(p0 context.Context, p1 uint64, p2 types.TipSetKey) ([]miner.SubmitWindowedPoStParams, error) {
+func (s *StorageMinerStub) ComputeWindowPoSt(p0 context.Context, p1 string, p2 uint64, p3 types.TipSetKey) ([]miner.SubmitWindowedPoStParams, error) {
 	return *new([]miner.SubmitWindowedPoStParams), ErrNotSupported
 }
 
@@ -6127,14 +6127,14 @@ func (s *StorageMinerStub) PledgeSector(p0 context.Context) (abi.SectorID, error
 	return *new(abi.SectorID), ErrNotSupported
 }
 
-func (s *StorageMinerStruct) RecoverFault(p0 context.Context, p1 []abi.SectorNumber) ([]cid.Cid, error) {
+func (s *StorageMinerStruct) RecoverFault(p0 context.Context, p1 string, p2 []abi.SectorNumber) ([]cid.Cid, error) {
 	if s.Internal.RecoverFault == nil {
 		return *new([]cid.Cid), ErrNotSupported
 	}
-	return s.Internal.RecoverFault(p0, p1)
+	return s.Internal.RecoverFault(p0, p1, p2)
 }
 
-func (s *StorageMinerStub) RecoverFault(p0 context.Context, p1 []abi.SectorNumber) ([]cid.Cid, error) {
+func (s *StorageMinerStub) RecoverFault(p0 context.Context, p1 string, p2 []abi.SectorNumber) ([]cid.Cid, error) {
 	return *new([]cid.Cid), ErrNotSupported
 }
 

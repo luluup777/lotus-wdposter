@@ -617,6 +617,13 @@ var provingComputeWindowPoStCmd = &cli.Command{
 	Description: `Note: This command is intended to be used to verify PoSt compute performance.
 It will not send any messages to the chain.`,
 	ArgsUsage: "[deadline index]",
+	Flags: []cli.Flag{
+		&cli.StringFlag{
+			Name:     "minerId",
+			Usage:    "miner id",
+			Required: true,
+		},
+	},
 	Action: func(cctx *cli.Context) error {
 		if cctx.NArg() != 1 {
 			return lcli.IncorrectNumArgs(cctx)
@@ -636,7 +643,8 @@ It will not send any messages to the chain.`,
 		ctx := lcli.ReqContext(cctx)
 
 		start := time.Now()
-		res, err := minerApi.ComputeWindowPoSt(ctx, dlIdx, types.EmptyTSK)
+
+		res, err := minerApi.ComputeWindowPoSt(ctx, cctx.String("minerId"), dlIdx, types.EmptyTSK)
 		fmt.Printf("Took %s\n", time.Now().Sub(start))
 		if err != nil {
 			return err
@@ -695,6 +703,11 @@ var provingRecoverFaultsCmd = &cli.Command{
 	Usage:     "Manually recovers faulty sectors on chain",
 	ArgsUsage: "<faulty sectors>",
 	Flags: []cli.Flag{
+		&cli.StringFlag{
+			Name:     "minerId",
+			Usage:    "miner id",
+			Required: true,
+		},
 		&cli.IntFlag{
 			Name:  "confidence",
 			Usage: "number of block confirmations to wait for",
@@ -730,7 +743,7 @@ var provingRecoverFaultsCmd = &cli.Command{
 
 		ctx := lcli.ReqContext(cctx)
 
-		msgs, err := minerApi.RecoverFault(ctx, sectors)
+		msgs, err := minerApi.RecoverFault(ctx, cctx.String("minerId"), sectors)
 		if err != nil {
 			return err
 		}

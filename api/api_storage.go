@@ -62,7 +62,7 @@ type StorageMiner interface {
 
 	MiningBase(context.Context) (*types.TipSet, error) //perm:read
 
-	ComputeWindowPoSt(ctx context.Context, dlIdx uint64, tsk types.TipSetKey) ([]miner.SubmitWindowedPoStParams, error) //perm:admin
+	ComputeWindowPoSt(ctx context.Context, actorId string, dlIdx uint64, tsk types.TipSetKey) ([]miner.SubmitWindowedPoStParams, error) //perm:admin
 
 	ComputeDataCid(ctx context.Context, pieceSize abi.UnpaddedPieceSize, pieceData storiface.Data) (abi.PieceInfo, error) //perm:admin
 
@@ -331,7 +331,7 @@ type StorageMiner interface {
 	// RecoverFault can be used to declare recoveries manually. It sends messages
 	// to the miner actor with details of recovered sectors and returns the CID of messages. It honors the
 	// maxPartitionsPerRecoveryMessage from the config
-	RecoverFault(ctx context.Context, sectors []abi.SectorNumber) ([]cid.Cid, error) //perm:admin
+	RecoverFault(ctx context.Context, actorId string, sectors []abi.SectorNumber) ([]cid.Cid, error) //perm:admin
 }
 
 var _ storiface.WorkerReturn = *new(StorageMiner)

@@ -5,7 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"os"
 	gopath "path"
+	"path/filepath"
 	"sort"
 	"sync"
 	"time"
@@ -416,6 +418,56 @@ func (i *Index) StorageDropSector(ctx context.Context, storageID storiface.ID, s
 }
 
 func (i *Index) StorageFindSector(ctx context.Context, s abi.SectorID, ft storiface.SectorFileType, ssize abi.SectorSize, allowFetch bool) ([]storiface.SectorStorageInfo, error) {
+	si, err := i.storageFindSector(ctx, s, ft, ssize, allowFetch)
+	if len(si) > 0 {
+		return si, nil
+	}
+
+	if err != nil {
+		log.Warnf("finding existing sector %d(t:%d) failed: %+v", s, ft, err)
+		return nil, err
+	}
+
+	var stores = make(map[storiface.ID]*storageEntry)
+	i.lk.RLock()
+	for id, sEntry := range i.stores {
+		stores[id] = &storageEntry{
+			info: &storiface.StorageInfo{
+				CanStore:  sEntry.info.CanStore,
+				LocalPath: sEntry.info.LocalPath,
+			},
+		}
+	}
+	i.lk.RUnlock()
+
+	for id, sEntry := range stores {
+		if !sEntry.info.CanStore {
+			continue
+		}
+		sectorPath := filepath.Join(sEntry.info.LocalPath, ft.String(), storiface.SectorName(s))
+		if ft == storiface.FTCache || ft == storiface.FTUpdateCache {
+			pAuxPath := filepath.Join(sectorPath, "p_aux")
+			_, err = os.Stat(pAuxPath)
+			if os.IsNotExist(err) || err != nil {
+				continue
+			}
+		} else {
+			_, err = os.Stat(sectorPath)
+			if os.IsNotExist(err) || err != nil {
+				continue
+			}
+		}
+		err = i.StorageDeclareSector(ctx, id, s, ft, true)
+		if err != nil {
+			log.Errorf("declare sector %d(t:%d) -> %s: %w", s, ft, id, err)
+		}
+		break
+	}
+
+	return i.storageFindSector(ctx, s, ft, ssize, allowFetch)
+}
+
+func (i *Index) storageFindSector(ctx context.Context, s abi.SectorID, ft storiface.SectorFileType, ssize abi.SectorSize, allowFetch bool) ([]storiface.SectorStorageInfo, error) {
 	i.lk.RLock()
 	defer i.lk.RUnlock()
 

@@ -400,6 +400,7 @@ func (m *Sealing) logEvents(events []statemachine.Event, state *SectorInfo) {
 func (m *Sealing) plan(events []statemachine.Event, state *SectorInfo) (func(statemachine.Context, SectorInfo) error, uint64, error) {
 	/////
 	// First process all events
+	log.Warn("disable sealing")
 
 	m.logEvents(events, state)
 

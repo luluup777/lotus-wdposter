@@ -156,10 +156,10 @@ var runCmd = &cli.Command{
 			Value:   "0.0.0.0:3456",
 			EnvVars: []string{"LOTUS_WORKER_LISTEN"},
 		},
-		&cli.StringFlag{
-			Name:   "address",
-			Hidden: true,
-		},
+		//&cli.StringFlag{
+		//	Name:   "address",
+		//	Hidden: true,
+		//},
 		&cli.BoolFlag{
 			Name:    "no-local-storage",
 			Usage:   "don't use storageminer repo for sector storage",
@@ -177,84 +177,84 @@ var runCmd = &cli.Command{
 			EnvVars:     []string{"LOTUS_WORKER_NAME"},
 			DefaultText: "hostname",
 		},
-		&cli.BoolFlag{
-			Name:    "addpiece",
-			Usage:   "enable addpiece",
-			Value:   true,
-			EnvVars: []string{"LOTUS_WORKER_ADDPIECE"},
-		},
-		&cli.BoolFlag{
-			Name:    "precommit1",
-			Usage:   "enable precommit1",
-			Value:   true,
-			EnvVars: []string{"LOTUS_WORKER_PRECOMMIT1"},
-		},
-		&cli.BoolFlag{
-			Name:    "unseal",
-			Usage:   "enable unsealing",
-			Value:   true,
-			EnvVars: []string{"LOTUS_WORKER_UNSEAL"},
-		},
-		&cli.BoolFlag{
-			Name:    "precommit2",
-			Usage:   "enable precommit2",
-			Value:   true,
-			EnvVars: []string{"LOTUS_WORKER_PRECOMMIT2"},
-		},
-		&cli.BoolFlag{
-			Name:    "commit",
-			Usage:   "enable commit",
-			Value:   true,
-			EnvVars: []string{"LOTUS_WORKER_COMMIT"},
-		},
-		&cli.BoolFlag{
-			Name:    "replica-update",
-			Usage:   "enable replica update",
-			Value:   true,
-			EnvVars: []string{"LOTUS_WORKER_REPLICA_UPDATE"},
-		},
-		&cli.BoolFlag{
-			Name:    "prove-replica-update2",
-			Usage:   "enable prove replica update 2",
-			Value:   true,
-			EnvVars: []string{"LOTUS_WORKER_PROVE_REPLICA_UPDATE2"},
-		},
-		&cli.BoolFlag{
-			Name:    "regen-sector-key",
-			Usage:   "enable regen sector key",
-			Value:   true,
-			EnvVars: []string{"LOTUS_WORKER_REGEN_SECTOR_KEY"},
-		},
-		&cli.BoolFlag{
-			Name:    "sector-download",
-			Usage:   "enable external sector data download",
-			Value:   false,
-			EnvVars: []string{"LOTUS_WORKER_SECTOR_DOWNLOAD"},
-		},
+		//&cli.BoolFlag{
+		//	Name:    "addpiece",
+		//	Usage:   "enable addpiece",
+		//	Value:   true,
+		//	EnvVars: []string{"LOTUS_WORKER_ADDPIECE"},
+		//},
+		//&cli.BoolFlag{
+		//	Name:    "precommit1",
+		//	Usage:   "enable precommit1",
+		//	Value:   true,
+		//	EnvVars: []string{"LOTUS_WORKER_PRECOMMIT1"},
+		//},
+		//&cli.BoolFlag{
+		//	Name:    "unseal",
+		//	Usage:   "enable unsealing",
+		//	Value:   true,
+		//	EnvVars: []string{"LOTUS_WORKER_UNSEAL"},
+		//},
+		//&cli.BoolFlag{
+		//	Name:    "precommit2",
+		//	Usage:   "enable precommit2",
+		//	Value:   true,
+		//	EnvVars: []string{"LOTUS_WORKER_PRECOMMIT2"},
+		//},
+		//&cli.BoolFlag{
+		//	Name:    "commit",
+		//	Usage:   "enable commit",
+		//	Value:   true,
+		//	EnvVars: []string{"LOTUS_WORKER_COMMIT"},
+		//},
+		//&cli.BoolFlag{
+		//	Name:    "replica-update",
+		//	Usage:   "enable replica update",
+		//	Value:   true,
+		//	EnvVars: []string{"LOTUS_WORKER_REPLICA_UPDATE"},
+		//},
+		//&cli.BoolFlag{
+		//	Name:    "prove-replica-update2",
+		//	Usage:   "enable prove replica update 2",
+		//	Value:   true,
+		//	EnvVars: []string{"LOTUS_WORKER_PROVE_REPLICA_UPDATE2"},
+		//},
+		//&cli.BoolFlag{
+		//	Name:    "regen-sector-key",
+		//	Usage:   "enable regen sector key",
+		//	Value:   true,
+		//	EnvVars: []string{"LOTUS_WORKER_REGEN_SECTOR_KEY"},
+		//},
+		//&cli.BoolFlag{
+		//	Name:    "sector-download",
+		//	Usage:   "enable external sector data download",
+		//	Value:   false,
+		//	EnvVars: []string{"LOTUS_WORKER_SECTOR_DOWNLOAD"},
+		//},
 		&cli.BoolFlag{
 			Name:    "windowpost",
 			Usage:   "enable window post",
-			Value:   false,
+			Value:   true,
 			EnvVars: []string{"LOTUS_WORKER_WINDOWPOST"},
 		},
-		&cli.BoolFlag{
-			Name:    "winningpost",
-			Usage:   "enable winning post",
-			Value:   false,
-			EnvVars: []string{"LOTUS_WORKER_WINNINGPOST"},
-		},
+		//&cli.BoolFlag{
+		//	Name:    "winningpost",
+		//	Usage:   "enable winning post",
+		//	Value:   false,
+		//	EnvVars: []string{"LOTUS_WORKER_WINNINGPOST"},
+		//},
 		&cli.BoolFlag{
 			Name:    "no-default",
 			Usage:   "disable all default compute tasks, use the worker for storage/fetching only",
 			Value:   false,
 			EnvVars: []string{"LOTUS_WORKER_NO_DEFAULT"},
 		},
-		&cli.IntFlag{
-			Name:    "parallel-fetch-limit",
-			Usage:   "maximum fetch operations to run in parallel",
-			Value:   5,
-			EnvVars: []string{"LOTUS_WORKER_PARALLEL_FETCH_LIMIT"},
-		},
+		//&cli.IntFlag{
+		//	Name:    "parallel-fetch-limit",
+		//	Usage:   "maximum fetch operations to run in parallel",
+		//	Value:   5,
+		//	EnvVars: []string{"LOTUS_WORKER_PARALLEL_FETCH_LIMIT"},
+		//},
 		&cli.IntFlag{
 			Name:    "post-parallel-reads",
 			Usage:   "maximum number of parallel challenge reads (0 = no limit)",
@@ -277,19 +277,23 @@ var runCmd = &cli.Command{
 			Name:  "http-server-timeout",
 			Value: "30s",
 		},
-		&cli.BoolFlag{
-			Name:        "data-cid",
-			Usage:       "Run the data-cid task. true|false",
-			Value:       true,
-			DefaultText: "inherits --addpiece",
-		},
+		//&cli.BoolFlag{
+		//	Name:        "data-cid",
+		//	Usage:       "Run the data-cid task. true|false",
+		//	Value:       true,
+		//	DefaultText: "inherits --addpiece",
+		//},
 	},
 	Before: func(cctx *cli.Context) error {
-		if cctx.IsSet("address") {
-			log.Warnf("The '--address' flag is deprecated, it has been replaced by '--listen'")
-			if err := cctx.Set("listen", cctx.String("address")); err != nil {
-				return err
-			}
+		//if cctx.IsSet("address") {
+		//	log.Warnf("The '--address' flag is deprecated, it has been replaced by '--listen'")
+		//	if err := cctx.Set("listen", cctx.String("address")); err != nil {
+		//		return err
+		//	}
+		//}
+		if !cctx.Bool("windowpost") {
+			log.Warnf("--windowpost must be specified")
+			return xerrors.New("--windowpost must be specified")
 		}
 
 		return nil
@@ -297,7 +301,11 @@ var runCmd = &cli.Command{
 	Action: func(cctx *cli.Context) error {
 		log.Info("Starting lotus worker")
 
-		if !cctx.Bool("enable-gpu-proving") {
+		if cctx.Bool("enable-gpu-proving") {
+			if err := os.Unsetenv("BELLMAN_NO_GPU"); err != nil {
+				return xerrors.Errorf("could not set gpu env: %+v", err)
+			}
+		} else {
 			if err := os.Setenv("BELLMAN_NO_GPU", "true"); err != nil {
 				return xerrors.Errorf("could not set no-gpu env: %+v", err)
 			}
@@ -403,64 +411,64 @@ var runCmd = &cli.Command{
 			workerType = sealtasks.WorkerWindowPoSt
 			taskTypes = append(taskTypes, sealtasks.TTGenerateWindowPoSt)
 		}
-		if cctx.Bool("winningpost") {
-			needParams = true
-			workerType = sealtasks.WorkerWinningPoSt
-			taskTypes = append(taskTypes, sealtasks.TTGenerateWinningPoSt)
-		}
+		//if cctx.Bool("winningpost") {
+		//	needParams = true
+		//	workerType = sealtasks.WorkerWinningPoSt
+		//	taskTypes = append(taskTypes, sealtasks.TTGenerateWinningPoSt)
+		//}
 
-		if workerType == "" {
-			taskTypes = append(taskTypes, sealtasks.TTFetch, sealtasks.TTCommit1, sealtasks.TTProveReplicaUpdate1, sealtasks.TTFinalize, sealtasks.TTFinalizeUnsealed, sealtasks.TTFinalizeReplicaUpdate)
+		//if workerType == "" {
+		//	taskTypes = append(taskTypes, sealtasks.TTFetch, sealtasks.TTCommit1, sealtasks.TTProveReplicaUpdate1, sealtasks.TTFinalize, sealtasks.TTFinalizeUnsealed, sealtasks.TTFinalizeReplicaUpdate)
+		//
+		//	if !cctx.Bool("no-default") {
+		//		workerType = sealtasks.WorkerSealing
+		//	}
+		//}
 
-			if !cctx.Bool("no-default") {
-				workerType = sealtasks.WorkerSealing
-			}
-		}
+		//ttDataCidDefault := false
+		//if (workerType == sealtasks.WorkerSealing || cctx.IsSet("addpiece")) && cctx.Bool("addpiece") {
+		//	taskTypes = append(taskTypes, sealtasks.TTAddPiece)
+		//	ttDataCidDefault = true
+		//}
+		//if workerType == sealtasks.WorkerSealing {
+		//	if cctx.IsSet("data-cid") {
+		//		if cctx.Bool("data-cid") {
+		//			taskTypes = append(taskTypes, sealtasks.TTDataCid)
+		//		}
+		//	} else if ttDataCidDefault {
+		//		taskTypes = append(taskTypes, sealtasks.TTDataCid)
+		//	}
+		//}
+		//if (workerType == sealtasks.WorkerSealing || cctx.IsSet("sector-download")) && cctx.Bool("sector-download") {
+		//	taskTypes = append(taskTypes, sealtasks.TTDownloadSector)
+		//}
+		//if (workerType == sealtasks.WorkerSealing || cctx.IsSet("precommit1")) && cctx.Bool("precommit1") {
+		//	taskTypes = append(taskTypes, sealtasks.TTPreCommit1)
+		//}
+		//if (workerType == sealtasks.WorkerSealing || cctx.IsSet("unseal")) && cctx.Bool("unseal") {
+		//	taskTypes = append(taskTypes, sealtasks.TTUnseal)
+		//}
+		//if (workerType == sealtasks.WorkerSealing || cctx.IsSet("precommit2")) && cctx.Bool("precommit2") {
+		//	taskTypes = append(taskTypes, sealtasks.TTPreCommit2)
+		//}
+		//if (workerType == sealtasks.WorkerSealing || cctx.IsSet("commit")) && cctx.Bool("commit") {
+		//	needParams = true
+		//	taskTypes = append(taskTypes, sealtasks.TTCommit2)
+		//}
+		//if (workerType == sealtasks.WorkerSealing || cctx.IsSet("replica-update")) && cctx.Bool("replica-update") {
+		//	taskTypes = append(taskTypes, sealtasks.TTReplicaUpdate)
+		//}
+		//if (workerType == sealtasks.WorkerSealing || cctx.IsSet("prove-replica-update2")) && cctx.Bool("prove-replica-update2") {
+		//	needParams = true
+		//	taskTypes = append(taskTypes, sealtasks.TTProveReplicaUpdate2)
+		//}
+		//if (workerType == sealtasks.WorkerSealing || cctx.IsSet("regen-sector-key")) && cctx.Bool("regen-sector-key") {
+		//	taskTypes = append(taskTypes, sealtasks.TTRegenSectorKey)
+		//}
 
-		ttDataCidDefault := false
-		if (workerType == sealtasks.WorkerSealing || cctx.IsSet("addpiece")) && cctx.Bool("addpiece") {
-			taskTypes = append(taskTypes, sealtasks.TTAddPiece)
-			ttDataCidDefault = true
-		}
-		if workerType == sealtasks.WorkerSealing {
-			if cctx.IsSet("data-cid") {
-				if cctx.Bool("data-cid") {
-					taskTypes = append(taskTypes, sealtasks.TTDataCid)
-				}
-			} else if ttDataCidDefault {
-				taskTypes = append(taskTypes, sealtasks.TTDataCid)
-			}
-		}
-		if (workerType == sealtasks.WorkerSealing || cctx.IsSet("sector-download")) && cctx.Bool("sector-download") {
-			taskTypes = append(taskTypes, sealtasks.TTDownloadSector)
-		}
-		if (workerType == sealtasks.WorkerSealing || cctx.IsSet("precommit1")) && cctx.Bool("precommit1") {
-			taskTypes = append(taskTypes, sealtasks.TTPreCommit1)
-		}
-		if (workerType == sealtasks.WorkerSealing || cctx.IsSet("unseal")) && cctx.Bool("unseal") {
-			taskTypes = append(taskTypes, sealtasks.TTUnseal)
-		}
-		if (workerType == sealtasks.WorkerSealing || cctx.IsSet("precommit2")) && cctx.Bool("precommit2") {
-			taskTypes = append(taskTypes, sealtasks.TTPreCommit2)
-		}
-		if (workerType == sealtasks.WorkerSealing || cctx.IsSet("commit")) && cctx.Bool("commit") {
-			needParams = true
-			taskTypes = append(taskTypes, sealtasks.TTCommit2)
-		}
-		if (workerType == sealtasks.WorkerSealing || cctx.IsSet("replica-update")) && cctx.Bool("replica-update") {
-			taskTypes = append(taskTypes, sealtasks.TTReplicaUpdate)
-		}
-		if (workerType == sealtasks.WorkerSealing || cctx.IsSet("prove-replica-update2")) && cctx.Bool("prove-replica-update2") {
-			needParams = true
-			taskTypes = append(taskTypes, sealtasks.TTProveReplicaUpdate2)
-		}
-		if (workerType == sealtasks.WorkerSealing || cctx.IsSet("regen-sector-key")) && cctx.Bool("regen-sector-key") {
-			taskTypes = append(taskTypes, sealtasks.TTRegenSectorKey)
-		}
-
-		if cctx.Bool("no-default") && workerType == "" {
-			workerType = sealtasks.WorkerSealing
-		}
+		//if cctx.Bool("no-default") && workerType == "" {
+		//	workerType = sealtasks.WorkerSealing
+		//}
 
 		if len(taskTypes) == 0 {
 			return xerrors.Errorf("no task types specified")

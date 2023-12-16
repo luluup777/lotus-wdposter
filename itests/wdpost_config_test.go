@@ -420,7 +420,7 @@ func TestWindowPostManualSectorsRecovery(t *testing.T) {
 
 	// Try to manually recover the sector
 	t.Log("Send recovery message")
-	_, err = miner.RecoverFault(ctx, failedSectors)
+	_, err = miner.RecoverFault(ctx, miner.ActorAddr.String(), failedSectors)
 	require.NoError(t, err)
 
 	currentHeight, err := client.ChainHead(ctx)

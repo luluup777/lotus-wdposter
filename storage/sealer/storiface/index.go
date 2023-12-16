@@ -86,6 +86,9 @@ type StorageInfo struct {
 	// - "update-cache"
 	// Any other value will generate a warning and be ignored.
 	DenyTypes []string
+
+	// storage path
+	LocalPath string
 }
 
 type HealthReport struct {

@@ -121,7 +121,7 @@ func ConfigStorageMiner(c interface{}) Option {
 			Override(PreflightChecksKey, modules.PreflightChecks),
 			Override(new(*sealing.Sealing), modules.SealingPipeline(cfg.Fees)),
 
-			Override(new(*wdpost.WindowPoStScheduler), modules.WindowPostScheduler(cfg.Fees, cfg.Proving)),
+			Override(new(*wdpost.WindowPoStClusterScheduler), modules.WindowPostScheduler(cfg.Fees, cfg.Proving)),
 			Override(new(sectorblocks.SectorBuilder), From(new(*sealing.Sealing))),
 		),
 

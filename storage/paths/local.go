@@ -190,6 +190,7 @@ func (st *Local) OpenPath(ctx context.Context, p string) error {
 		AllowTo:    meta.AllowTo,
 		AllowTypes: meta.AllowTypes,
 		DenyTypes:  meta.DenyTypes,
+		LocalPath:  out.local,
 	}, fst)
 	if err != nil {
 		return xerrors.Errorf("declaring storage in index: %w", err)
@@ -280,6 +281,7 @@ func (st *Local) Redeclare(ctx context.Context, filterId *storiface.ID, dropMiss
 			AllowTo:    meta.AllowTo,
 			AllowTypes: meta.AllowTypes,
 			DenyTypes:  meta.DenyTypes,
+			LocalPath:  p.local,
 		}, fst)
 		if err != nil {
 			return xerrors.Errorf("redeclaring storage in index: %w", err)
@@ -294,68 +296,68 @@ func (st *Local) Redeclare(ctx context.Context, filterId *storiface.ID, dropMiss
 }
 
 func (st *Local) declareSectors(ctx context.Context, p string, id storiface.ID, primary, dropMissing bool) error {
-	indexed := map[storiface.Decl]struct{}{}
-	if dropMissing {
-		decls, err := st.index.StorageList(ctx)
-		if err != nil {
-			return xerrors.Errorf("getting declaration list: %w", err)
-		}
-
-		for _, decl := range decls[id] {
-			for _, fileType := range decl.SectorFileType.AllSet() {
-				indexed[storiface.Decl{
-					SectorID:       decl.SectorID,
-					SectorFileType: fileType,
-				}] = struct{}{}
-			}
-		}
-	}
-
-	for _, t := range storiface.PathTypes {
-		ents, err := os.ReadDir(filepath.Join(p, t.String()))
-		if err != nil {
-			if os.IsNotExist(err) {
-				if err := os.MkdirAll(filepath.Join(p, t.String()), 0755); err != nil { // nolint
-					return xerrors.Errorf("openPath mkdir '%s': %w", filepath.Join(p, t.String()), err)
-				}
-
-				continue
-			}
-			return xerrors.Errorf("listing %s: %w", filepath.Join(p, t.String()), err)
-		}
-
-		for _, ent := range ents {
-			if ent.Name() == FetchTempSubdir {
-				continue
-			}
-
-			sid, err := storiface.ParseSectorID(ent.Name())
-			if err != nil {
-				return xerrors.Errorf("parse sector id %s: %w", ent.Name(), err)
-			}
-
-			delete(indexed, storiface.Decl{
-				SectorID:       sid,
-				SectorFileType: t,
-			})
-
-			if err := st.index.StorageDeclareSector(ctx, id, sid, t, primary); err != nil {
-				return xerrors.Errorf("declare sector %d(t:%d) -> %s: %w", sid, t, id, err)
-			}
-		}
-	}
-
-	if len(indexed) > 0 {
-		log.Warnw("index contains sectors which are missing in the storage path", "count", len(indexed), "dropMissing", dropMissing)
-	}
-
-	if dropMissing {
-		for decl := range indexed {
-			if err := st.index.StorageDropSector(ctx, id, decl.SectorID, decl.SectorFileType); err != nil {
-				return xerrors.Errorf("dropping sector %v from index: %w", decl, err)
-			}
-		}
-	}
+	//indexed := map[storiface.Decl]struct{}{}
+	//if dropMissing {
+	//	decls, err := st.index.StorageList(ctx)
+	//	if err != nil {
+	//		return xerrors.Errorf("getting declaration list: %w", err)
+	//	}
+	//
+	//	for _, decl := range decls[id] {
+	//		for _, fileType := range decl.SectorFileType.AllSet() {
+	//			indexed[storiface.Decl{
+	//				SectorID:       decl.SectorID,
+	//				SectorFileType: fileType,
+	//			}] = struct{}{}
+	//		}
+	//	}
+	//}
+	//
+	//for _, t := range storiface.PathTypes {
+	//	ents, err := os.ReadDir(filepath.Join(p, t.String()))
+	//	if err != nil {
+	//		if os.IsNotExist(err) {
+	//			if err := os.MkdirAll(filepath.Join(p, t.String()), 0755); err != nil { // nolint
+	//				return xerrors.Errorf("openPath mkdir '%s': %w", filepath.Join(p, t.String()), err)
+	//			}
+	//
+	//			continue
+	//		}
+	//		return xerrors.Errorf("listing %s: %w", filepath.Join(p, t.String()), err)
+	//	}
+	//
+	//	for _, ent := range ents {
+	//		if ent.Name() == FetchTempSubdir {
+	//			continue
+	//		}
+	//
+	//		sid, err := storiface.ParseSectorID(ent.Name())
+	//		if err != nil {
+	//			return xerrors.Errorf("parse sector id %s: %w", ent.Name(), err)
+	//		}
+	//
+	//		delete(indexed, storiface.Decl{
+	//			SectorID:       sid,
+	//			SectorFileType: t,
+	//		})
+	//
+	//		if err := st.index.StorageDeclareSector(ctx, id, sid, t, primary); err != nil {
+	//			return xerrors.Errorf("declare sector %d(t:%d) -> %s: %w", sid, t, id, err)
+	//		}
+	//	}
+	//}
+	//
+	//if len(indexed) > 0 {
+	//	log.Warnw("index contains sectors which are missing in the storage path", "count", len(indexed), "dropMissing", dropMissing)
+	//}
+	//
+	//if dropMissing {
+	//	for decl := range indexed {
+	//		if err := st.index.StorageDropSector(ctx, id, decl.SectorID, decl.SectorFileType); err != nil {
+	//			return xerrors.Errorf("dropping sector %v from index: %w", decl, err)
+	//		}
+	//	}
+	//}
 
 	return nil
 }

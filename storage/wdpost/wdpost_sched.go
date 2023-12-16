@@ -2,6 +2,7 @@ package wdpost
 
 import (
 	"context"
+	sealing "github.com/filecoin-project/lotus/storage/pipeline"
 	"time"
 
 	"github.com/ipfs/go-cid"
@@ -23,7 +24,6 @@ import (
 	"github.com/filecoin-project/lotus/chain/types"
 	"github.com/filecoin-project/lotus/journal"
 	"github.com/filecoin-project/lotus/node/config"
-	"github.com/filecoin-project/lotus/storage/ctladdr"
 	"github.com/filecoin-project/lotus/storage/sealer"
 	"github.com/filecoin-project/lotus/storage/sealer/storiface"
 )
@@ -65,7 +65,7 @@ type NodeAPI interface {
 type WindowPoStScheduler struct {
 	api                                     NodeAPI
 	feeCfg                                  config.MinerFeeConfig
-	addrSel                                 *ctladdr.AddressSelector
+	addrSel                                 sealing.AddressSelector
 	prover                                  storiface.ProverPoSt
 	verifier                                storiface.Verifier
 	faultTracker                            sealer.FaultTracker
@@ -90,7 +90,7 @@ type WindowPoStScheduler struct {
 func NewWindowedPoStScheduler(api NodeAPI,
 	cfg config.MinerFeeConfig,
 	pcfg config.ProvingConfig,
-	as *ctladdr.AddressSelector,
+	as sealing.AddressSelector,
 	sp storiface.ProverPoSt,
 	verif storiface.Verifier,
 	ft sealer.FaultTracker,
@@ -116,10 +116,10 @@ func NewWindowedPoStScheduler(api NodeAPI,
 		singleRecoveringPartitionPerPostMessage: pcfg.SingleRecoveringPartitionPerPostMessage,
 		actor:                                   actor,
 		evtTypes: [...]journal.EventType{
-			evtTypeWdPoStScheduler:  j.RegisterEventType("wdpost", "scheduler"),
-			evtTypeWdPoStProofs:     j.RegisterEventType("wdpost", "proofs_processed"),
-			evtTypeWdPoStRecoveries: j.RegisterEventType("wdpost", "recoveries_processed"),
-			evtTypeWdPoStFaults:     j.RegisterEventType("wdpost", "faults_processed"),
+			evtTypeWdPoStScheduler:  j.RegisterEventType("wdpost_"+actor.String(), "scheduler"),
+			evtTypeWdPoStProofs:     j.RegisterEventType("wdpost_"+actor.String(), "proofs_processed"),
+			evtTypeWdPoStRecoveries: j.RegisterEventType("wdpost_"+actor.String(), "recoveries_processed"),
+			evtTypeWdPoStFaults:     j.RegisterEventType("wdpost_"+actor.String(), "faults_processed"),
 		},
 		journal: j,
 	}, nil

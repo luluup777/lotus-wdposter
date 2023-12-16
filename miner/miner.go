@@ -146,7 +146,8 @@ func (m *Miner) Start(_ context.Context) error {
 		return fmt.Errorf("miner already started")
 	}
 	m.stop = make(chan struct{})
-	go m.mine(context.TODO())
+	//go m.mine(context.TODO())
+	log.Warn("disable winning post")
 	return nil
 }
 
