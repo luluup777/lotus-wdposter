@@ -133,6 +133,9 @@ Note: The default branch `master` is the dev branch where the latest new feature
 
 6. You should now have Lotus installed. You can now [start the Lotus daemon and sync the chain](https://lotus.filecoin.io/lotus/install/linux/#start-the-lotus-daemon-and-sync-the-chain).
 
+7. Please copy minerinfo.yaml to $LOTUS_MINER_PATH and configure it correctly.
+8. Run lotus-miner and multiple lotus-workers to run wdpost tasks.
+
 ## License
 
 Dual-licensed under [MIT](https://github.com/filecoin-project/lotus/blob/master/LICENSE-MIT) + [Apache 2.0](https://github.com/filecoin-project/lotus/blob/master/LICENSE-APACHE)

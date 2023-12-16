@@ -1,0 +1,10 @@
+posts:
+  - actor: t01000
+    postaddr: t3xxxx
+    stop: false
+  - actor: t01002
+    postaddr: t3xxxx
+    stop: false
+  - actor: t01003
+    postaddr: t3xxxx
+    stop: true # will stop
